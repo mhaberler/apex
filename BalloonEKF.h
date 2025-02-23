@@ -74,9 +74,9 @@ public:
 
     void update(double altitude) {
         double z = altitude;
-        double y = z - H * x; // Scalar residual
-        double S = (H * P * H.transpose())(0, 0) + R; // Scalar innovation covariance
-        Eigen::Vector4d K = P * H.transpose() / S;    // Kalman gain (4x1)
+        double y = z - H * x;
+        double S = (H * P * H.transpose())(0, 0) + R;
+        Eigen::Vector4d K = P * H.transpose() / S;
         x = x + K * y;
         Eigen::Matrix4d I = Eigen::Matrix4d::Identity();
         P = (I - K * H) * P;
@@ -92,6 +92,29 @@ public:
 
         if (v * a < 0) {
             timeToZeroSpeed = -v / a;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Computes the altitude where vertical speed reaches zero if decelerating.
+     * @param altitude Output parameter for the altitude at zero speed.
+     * @return True if decelerating and altitude is valid, false otherwise.
+     */
+    bool getZeroSpeedAltitude(double& altitude) {
+        if (!initialized) {
+            return false;
+        }
+
+        double h = x(0);
+        double v = x(1);
+        double a = x(2);
+
+        if (v * a < 0) { // Decelerating
+            double t = -v / a;              // Time to zero speed
+            altitude = h + v * t + 0.5 * a * t * t; // Full kinematic equation
+            // Alternatively: altitude = h - v * v / (2 * a); // Simplified form
             return true;
         }
         return false;

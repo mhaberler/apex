@@ -20,6 +20,8 @@ TARGET = balloon_ekf
 SOURCES =  test_balloonEKF.cpp
 #SOURCES = BalloonEKF.h test_balloonEKF.cpp
 
+test_balloonEKF.cpp: BalloonEKF.h
+
 # Object files
 OBJECTS = $(SOURCES:.cpp=.o)
 

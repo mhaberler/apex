@@ -10,10 +10,12 @@ burner on/off + duration is ignored
 $ ./balloon_ekf
 Timeseries 1:
 Decelerating. Time to zero speed: 8.09801 s
+Altitude at zero speed: 109.672 m
 State - h: 105.993, v: 0.908543, a: -0.112193, bg: 0.1
 
 
 Timeseries 2:
 Not decelerating.
+Zero speed altitude not applicable.
 State - h: 111.953, v: 3.39975, a: 0.982274, bg: 0.1
 ```
